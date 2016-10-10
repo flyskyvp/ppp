@@ -25,7 +25,6 @@ if __name__ == '__main__':
 	DBSession = sessionmaker(bind=engine)
 
 	session = DBSession()
-
 	# 增加
 	new_user1 = Users(id='5', name='Bob')
 	session.add(new_user1)
