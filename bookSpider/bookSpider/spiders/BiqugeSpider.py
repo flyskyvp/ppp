@@ -12,7 +12,7 @@ class BiqugeSpider(scrapy.Spider):
 
     def parse(self, response):
         print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxstart parse"
-        lis = response.xpath('//div[@id="list"]/dl/dd[1]')
+        lis = response.xpath('//div[@id="list"]/dl/dd')
         print 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxlis',lis
         for li in lis:
             print li
