@@ -17,17 +17,17 @@ class ZhihuSpider(CrawlSpider):
         Rule(SgmlLinkExtractor(allow = ('/question/\d+', )), callback = 'parse_page', follow = True),
     )
     headers = {
-    "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36",
-    "Access-Control-Allow-Credentials":"true",
-    "Access-Control-Allow-Origin:http":"//www.zhihu.com",
-    "Cache-Control":"max-age=0, no-cache, no-store",
-    "Connection":"keep-alive",
-    "Content-Length":"185",
-    "Content-Type":"application/json",
-    "Pragma":"no-cache",
-    "Server":"ZWS",
-    "Vary":"Accept-Encoding",
-    "X-Frame-Options":"DENY"
+    'Accept':'*/*',
+    'Accept-Encoding':'gzip, deflate, br',
+    'Accept-Language':'zh-CN,zh;q=0.8',
+    'Connection':'keep-alive',
+    'Content-Length':'119',
+    'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+    'Host':'www.zhihu.com',
+    'Origin':'https://www.zhihu.com',
+    'Referer':'https://www.zhihu.com/',
+    'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36',
+    'X-Requested-With':'XMLHttpRequest'
     }
 
     #重写了爬虫类的方法, 实现了自定义请求, 运行成功后会调用callback回调函数
@@ -46,15 +46,18 @@ class ZhihuSpider(CrawlSpider):
                             meta = {'cookiejar' : response.meta['cookiejar']},
                             headers = self.headers,  #注意此处的headers
                             formdata = {
-                            '_xsrf': xsrf,
-                            'email': '1025152984@qq.com',
-                            'password': 'srbrybxwcg'
+                            '_xsrf': xsrf,                            
+                            'password': 'srbrybxwcg',
+                            'captcha_type':'cn',
+                            'remember_me':'true',
+                            'email': '1025152984@qq.com'
                             },
                             callback = self.after_login,
                             dont_filter = True
                             )]
 
     def after_login(self, response) :
+        print 'dddddddddddddddddddddddddddddddddddddddddddddddd'
         for url in self.start_urls :
             yield self.make_requests_from_url(url)
 
