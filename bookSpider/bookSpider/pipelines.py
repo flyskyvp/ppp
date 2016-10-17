@@ -16,27 +16,32 @@ Base = declarative_base()
 
 class Novels(Base):
     __tablename__ = 'Novels'
-
     id = Column(Integer, primary_key=True)
-
     book_name = Column(String(100))
+    chapter_name = Column(String(200))
     paragraph_index = Column(Integer)
     paragraph_text = Column(String(4000))
 
 class BookspiderPipeline(object):
+    def open_spider(self,spider):
+        self.engine = create_engine('mysql+pymysql://root:x@localhost/test?charset=utf8',echo=True)
+        self.DBSession = sessionmaker(bind=self.engine)
+        self.session = self.DBSession()
 
     def process_item(self, item, spider):
-        engine = create_engine('mysql+pymysql://root:x@localhost/test?charset=utf8',echo=True)
-        DBSession = sessionmaker(bind=engine)
-        session = DBSession()
+        
 
         a = Novels(
                     book_name=item["book_name"],
+                    chapter_name=item["chapter_name"],
                     paragraph_index=item["paragraph_index"],
                     paragraph_text=item["paragraph_text"]
                    )
   
-        Base.metadata.create_all(engine)
-        session.add(a)
-        session.commit()
-        sesession.close()
+        Base.metadata.create_all(self.engine)
+        self.session.add(a)
+        self.session.commit()
+        
+
+    def close_spider(self,spider):
+        self.session.close()
