@@ -6,15 +6,16 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.template import RequestContext
 from blog.models import User
 from blog.models import BlogsPost
+from blog.models import UserInfo, BlogBody
 
 
 # Create your views here.
-def index(request):
+def index11(request):
     blog_list = BlogsPost.objects.all()
     # for i in blog_list:
         # print i.title
         # print i.timestamp
-    return render_to_response('index.html',{'blog_list':blog_list})
+    return render_to_response('index11.html',{'blog_list':blog_list})
 
 #定义表单模型
 class UserForm(forms.Form):
@@ -85,3 +86,13 @@ def logout(request):
     #清理cookie里保存username
     response.delete_cookie('username')
     return response
+
+
+
+def index(request):
+    userinfo = UserInfo.objects.first()
+    blog_body = BlogBody.objects.all()[:6]
+    return render(request,
+                  'index.html',
+                  {'userinfo': userinfo, 'blog_body': blog_body})
+
