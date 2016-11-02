@@ -3,12 +3,24 @@ import scrapy
 from bookSpider.items import BookspiderItem
 
 class BiqugeSpider(scrapy.Spider):
+    handle_httpstatus_list = [301]
     name = "bookSpider"
-    allowed_domains = ["biquge.la"]
+    allowed_domains = ["qu.la"]
     start_urls = (
-        'http://www.biquge.la/book/903/',
+        'http://www.qu.la/book/903/',
     )
     print 'xxxxxxxxxxxxxxxxxxxxxxstart'
+
+    headers = {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Encoding": "gzip, deflate, sdch",
+        "Accept-Language": "zh-CN,zh;q=0.8",
+        "Connection": "keep-alive",
+        "Host":"www.qu.la",
+        "Referer": "http://www.qu.la/book/903/",
+        "Upgrade-Insecure-Requests":"1",
+        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36"
+    }
 
     def parse(self, response):
         # print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxstart parse"
@@ -36,5 +48,7 @@ class BiqugeSpider(scrapy.Spider):
             items['chapter_name']=chapter_name
             items['paragraph_index']=paragraph_index
             items['paragraph_text']=paragraph_text
+            print 'hhhhhhhhhhh----------------------',self.book_name,chapter_name,paragraph_index,paragraph_text
+            
             yield items
             # print 'lalllalalalalalallalala',self.book_name,chapter_name,paragraph_index,paragraph_text
